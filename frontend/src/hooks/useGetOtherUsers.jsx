@@ -10,37 +10,18 @@ const useGetOtherUsers = () => {
     useEffect(() => {
         const fetchOtherUsers = async () => {
             try {
-                // Get the token from localStorage (or sessionStorage, depending on where you stored it)
-                const token = localStorage.getItem('token'); // Adjust if stored elsewhere
-                
-                if (!token) {
-                    throw new Error('No token found');
-                }
-
-                // Set token in Authorization header
-                const config = {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                    withCredentials: true,  // If you need cookies as well, keep this
-                };
-
-                const res = await axios.get(`${BASE_URL}/api/v1/user`, config);
-                
-                // Log the response to ensure you get the expected data
-                console.log("other users -> ", res.data);
-
-                // Dispatch action to Redux store with the data
+                axios.defaults.withCredentials = true;
+                const res = await axios.get(`${BASE_URL}/api/v1/user`);
+                // store
+                console.log("other users -> ",res);
                 dispatch(setOtherUsers(res.data));
             } catch (error) {
-                console.error('Error fetching other users: ', error);
+                console.log(error);
             }
-        };
-
+        }
         fetchOtherUsers();
-    }, [dispatch]);  // Added dispatch as dependency to avoid warnings in React
+    }, [])
 
 }
 
-export default useGetOtherUsers;
+export default useGetOtherUsers
