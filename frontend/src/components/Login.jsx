@@ -17,6 +17,7 @@ const Login = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
+      console.log(`${BASE_URL}/api/v1/user/login`);
       const res = await axios.post(`${BASE_URL}/api/v1/user/login`, user, {
         headers: {
           'Content-Type': 'application/json'
@@ -24,7 +25,7 @@ const Login = () => {
         withCredentials: true
       });
       navigate("/");
-      console.log(res);
+      // console.log(res);
       dispatch(setAuthUser(res.data));
     } catch (error) {
       toast.error(error.response.data.message);

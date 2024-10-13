@@ -8,9 +8,12 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { app,server } from "./socket/socket.js";
 dotenv.config({});
+import path from "path"
 
  
 const PORT = process.env.PORT || 8080;
+
+const _dirname = path.resolve();
 
 // middleware
 app.use(express.urlencoded({extended:true}));
@@ -26,8 +29,11 @@ app.use(cors(corsOption));
 // routes
 app.use("/api/v1/user",userRoute); 
 app.use("/api/v1/message",messageRoute);
+app.use(express.static(path.join(_dirname,"/frontend/dist")))
  
-
+app.get('*',(req,res)=>{
+    res.sendFile(path.resolve(_dirname,"frontend","dist","index.html"));
+})
 server.listen(PORT, ()=>{
     connectDB();
     console.log(`Server listen at prot ${PORT}`);
